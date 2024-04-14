@@ -1,15 +1,19 @@
-from typing import Union
+import sqlite3
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
-from fastapi import FastAPI
+DATABASE = './tmp/community_next'
+DEBUG = True
+SECRET_KEY = 'development key'
+USERNAME = 'admin'
+PASSWORD = 'dummy'
 
-app = FastAPI()
+app = Flask(__name__)
+app.config.from_object(__name__)
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def connect_db():
+    return sqlite3.connect(app.config['DATABASE'])
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+if __name__ == '__main__':
+    app.run()
